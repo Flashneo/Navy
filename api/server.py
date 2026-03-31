@@ -1,7 +1,14 @@
 from __future__ import annotations
 
 import os
+import sys
 import threading
+from pathlib import Path
+
+# Ensure the project root is on sys.path (needed for Railway deployment)
+_project_root = str(Path(__file__).parent.parent)
+if _project_root not in sys.path:
+    sys.path.insert(0, _project_root)
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
