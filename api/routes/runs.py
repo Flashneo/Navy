@@ -23,6 +23,8 @@ class RunRequest(BaseModel):
 
 def _execute_pipeline(run_request: RunRequest) -> None:
     global _active_run
+    import logging
+    logger = logging.getLogger("navy.runner")
     _stop_event.clear()
     _progress.update({"step": "starting", "jobs_found": 0, "jobs_new": 0, "jobs_passed": 0})
     try:
@@ -34,8 +36,10 @@ def _execute_pipeline(run_request: RunRequest) -> None:
             stop_event=_stop_event,
             progress=_progress,
         )
-    except Exception:
-        pass
+        _progress["step"] = "completed"
+    except Exception as e:
+        logger.error(f"Pipeline failed: {e}", exc_info=True)
+        _progress["step"] = f"error: {e}"
     finally:
         with _run_lock:
             _active_run = None
@@ -67,7 +71,7 @@ def get_active_run():
     with _run_lock:
         if _active_run:
             return {"active": True, **_active_run, "progress": dict(_progress)}
-    return {"active": False}
+    return {"active": False, "last_progress": dict(_progress)}
 
 
 @router.get("/runs/{run_id}")
