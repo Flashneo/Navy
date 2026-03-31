@@ -33,10 +33,13 @@ active_run_lock = threading.Lock()
 
 @app.on_event("startup")
 def startup_telegram_bot():
-    from navy.output.telegram import start_bot
-
-    token = os.getenv("TELEGRAM_BOT_TOKEN", "")
-    start_bot(token)
+    try:
+        from navy.output.telegram import start_bot
+        token = os.getenv("TELEGRAM_BOT_TOKEN", "")
+        start_bot(token)
+    except ImportError as e:
+        import logging
+        logging.warning(f"Telegram bot not started: {e}")
 
 app.include_router(job_routes.router, prefix="/api")
 app.include_router(run_routes.router, prefix="/api")
