@@ -5,7 +5,7 @@ __pycache__/
 .env.local
 web/.env.local
 data/
-output/
+/output/
 *.egg-info/
 dist/
 build/
@@ -18,3 +18,4 @@ web/node_modules/
 web/.next/
 .claude/plans/
 *.output
+.vercel
