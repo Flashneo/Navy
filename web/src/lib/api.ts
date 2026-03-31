@@ -1,17 +1,12 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-const API_KEY = process.env.NEXT_PUBLIC_API_KEY || "";
 
 async function fetchAPI<T>(path: string, options?: RequestInit): Promise<T> {
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    ...options?.headers as Record<string, string>,
-  };
-  if (API_KEY) {
-    headers["X-API-Key"] = API_KEY;
-  }
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
-    headers,
+    headers: {
+      "Content-Type": "application/json",
+      ...options?.headers,
+    },
   });
   if (!res.ok) {
     throw new Error(`API error: ${res.status} ${res.statusText}`);
@@ -125,5 +120,5 @@ export const api = {
     }),
 
   getExportUrl: (format: "csv" | "json") =>
-    `${API_BASE}/api/export?format=${format}${API_KEY ? `&api_key=${API_KEY}` : ""}`,
+    `${API_BASE}/api/export?format=${format}`,
 };

@@ -4,9 +4,7 @@ import csv
 import io
 import json
 
-from fastapi import APIRouter, Depends, Query
-
-from api.auth import require_auth
+from fastapi import APIRouter, Query
 from fastapi.responses import StreamingResponse
 
 from api.deps import get_db
@@ -14,7 +12,7 @@ from api.deps import get_db
 router = APIRouter()
 
 
-@router.get("/export", dependencies=[Depends(require_auth)])
+@router.get("/export")
 def export_jobs(format: str = Query("csv", pattern="^(csv|json)$")):
     db = get_db()
     try:

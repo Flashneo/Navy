@@ -2,10 +2,9 @@ from __future__ import annotations
 
 import threading
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from pydantic import BaseModel
 
-from api.auth import require_auth
 from api.deps import get_db
 
 router = APIRouter()
@@ -83,7 +82,7 @@ def get_run(run_id: int):
         db.close()
 
 
-@router.post("/runs", dependencies=[Depends(require_auth)])
+@router.post("/runs")
 def trigger_run(request: RunRequest):
     global _active_run
 
@@ -102,7 +101,7 @@ def trigger_run(request: RunRequest):
     return {"message": "Pipeline run started", "active_run": _active_run}
 
 
-@router.post("/runs/stop", dependencies=[Depends(require_auth)])
+@router.post("/runs/stop")
 def stop_run():
     with _run_lock:
         if not _active_run or _active_run["status"] not in ("running", "stopping"):
