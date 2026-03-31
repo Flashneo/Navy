@@ -1,0 +1,24 @@
+[project]
+name = "navy"
+version = "0.1.0"
+description = "LinkedIn Job Search AI Agent"
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.0",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "openai>=1.0",
+    "anthropic>=0.40",
+]
+
+[project.scripts]
+navy = "navy.main:main"
+
+[tool.setuptools.packages.find]
+include = ["navy*"]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"

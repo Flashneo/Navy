@@ -1,0 +1,58 @@
+search:
+  keywords:
+    - "SEO specialist"
+    - "Growth Lead"
+    - "AI specialist"
+    - "AI Automation engineer"
+    - "Prompt engineer"
+    - "Python developer"
+    - "low code"
+  locations:
+    - "Worldwide"
+  time_filters:
+    - "r604800"   # last week
+  experience_level: "4"  # Mid-Senior level
+  remote_filters:
+    - "2"  # Remote
+    - "3"  # Hybrid
+
+filtering:
+  company_size:
+    startup:
+      min: 1
+      max: 50
+    medium:
+      min: 51
+      max: 500
+  allowed_categories:
+    - "startup"
+    - "medium"
+    - "unknown"
+
+scoring:
+  provider: "openai"         # "openai" or "anthropic"
+  model: "gpt-4o-mini"      # or "claude-sonnet-4-20250514"
+  user_profile: |
+    Experienced professional with 5-8 years in SEO, growth marketing,
+    AI automation, prompt engineering, and Python development.
+    Looking for mid-senior to senior roles at startups or medium-sized
+    companies. Open to remote and hybrid positions in LATAM.
+    Skills: SEO strategy, growth hacking, AI/ML workflows, Python,
+    low-code/no-code platforms, automation pipelines, prompt engineering.
+  min_relevance_score: 0.5
+
+rate_limiting:
+  requests_per_minute: 15
+  retry_max: 3
+  retry_backoff_base: 2.0
+  jitter_min: 0.5
+  jitter_max: 1.5
+
+storage:
+  db_path: "data/navy.db"
+
+output:
+  formats:
+    - "csv"
+    - "json"
+  output_dir: "output/"
