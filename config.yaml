@@ -39,7 +39,7 @@ scoring:
     companies. Open to remote and hybrid positions in LATAM.
     Skills: SEO strategy, growth hacking, AI/ML workflows, Python,
     low-code/no-code platforms, automation pipelines, prompt engineering.
-  min_relevance_score: 0.5
+  min_relevance_score: 0.3
 
 rate_limiting:
   requests_per_minute: 15

@@ -62,15 +62,31 @@ def _keyword_fallback_score(job: Job, user_profile: str) -> ScoredJob:
         "low code", "low-code", "machine learning", "llm", "marketing",
         "data", "engineer", "specialist", "lead", "senior",
     ]
-    text = f"{job.title} {job.description or ''} {job.company_name}".lower()
+    title_lower = job.title.lower()
+    desc_lower = (job.description or "").lower()
+    company_lower = job.company_name.lower()
     profile_lower = user_profile.lower()
-    matched = [kw for kw in keywords if kw in text and kw in profile_lower]
-    score = min(len(matched) / 6.0, 1.0)
+
+    matched = []
+    score = 0.0
+    for kw in keywords:
+        if kw not in profile_lower:
+            continue
+        # Title matches are worth 2x
+        if kw in title_lower:
+            matched.append(kw)
+            score += 2.0
+        elif kw in desc_lower or kw in company_lower:
+            matched.append(kw)
+            score += 1.0
+
+    # Normalize: 4 points = 100% (e.g. 2 title matches)
+    score = min(score / 4.0, 1.0)
 
     return ScoredJob(
         job=job,
         relevance_score=round(score, 2),
-        score_reasoning="Keyword-based fallback scoring",
+        score_reasoning="Keyword-based scoring",
         matched_keywords=matched,
     )
 
