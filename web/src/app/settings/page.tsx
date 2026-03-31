@@ -29,7 +29,7 @@ export default function SettingsPage() {
     api.getConfig().then((data) => {
       setConfig(data);
       setLoading(false);
-    });
+    }).catch(() => setLoading(false));
   }, []);
 
   const handleSave = async () => {

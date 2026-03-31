@@ -14,6 +14,7 @@ export default function DashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [topJobs, setTopJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     Promise.all([
@@ -23,7 +24,10 @@ export default function DashboardPage() {
       setStats(statsData);
       setTopJobs(jobsData.jobs);
       setLoading(false);
-    }).catch(() => setLoading(false));
+    }).catch((e) => {
+      setError(e?.message || "Failed to connect to API");
+      setLoading(false);
+    });
   }, []);
 
   if (loading) {
@@ -34,7 +38,27 @@ export default function DashboardPage() {
     );
   }
 
-  if (!stats) return <div>Failed to load stats. Is the API server running on port 8000?</div>;
+  if (error || !stats) return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+          <p className="text-muted-foreground">Overview of your job search agent</p>
+        </div>
+      </div>
+      <Card>
+        <CardContent className="pt-6">
+          <div className="text-center space-y-2">
+            <p className="text-lg font-medium">Cannot connect to API server</p>
+            <p className="text-sm text-muted-foreground">{error}</p>
+            <Button onClick={() => window.location.reload()} variant="outline" className="mt-4">
+              Retry
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
 
   return (
     <div className="space-y-8">
